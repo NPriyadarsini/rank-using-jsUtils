@@ -6,39 +6,18 @@ const data = {
         {
             student: 'Sriram',
             rollNo: 11,
-            tamil: 80,
-            english: 90,
-            science: 86,
-            maths: 97,
-            social: 76,
         },
         {
             student: 'Ram',
-            rollNo: 16,
-            tamil: 60,
-            english: 97,
-            science: 100,
-            maths: 34,
-            social: 100,
-            
+            rollNo: 16,            
         },
         {
             student: 'sri',
             rollNo: 18,
-            tamil: 60,
-            english: 90,
-            science: 66,
-            maths: 93,
-            social: 46,
         },
         {
             student: 'mani',
             rollNo: 20,
-            tamil: 40,
-            english: 70,
-            science: 86,
-            maths: 73,
-            social: 86,
         },
     ] 
 };
