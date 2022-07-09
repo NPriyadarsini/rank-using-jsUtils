@@ -51,45 +51,39 @@ const studentMarks = {
         social: 86,
     },
 }
-const getStudentDetails = (markSheet) => {
-    const minMark = 35;
-    const  name =markSheet.student;
-    var rollNo =markSheet.rollNo;
-    var marks = (studentMarks[rollNo]);
-    var total =reduce(marks,(a,b)=>a+b,0);
-    var result =  Math.min(...values(marks))> minMark ? "Pass" : "Fail";
-    
-    return {
-        name,
-        rollNo,
-        ...marks,
-        result,
-        total,
-    }
-};
-var counter = (a,b)=>
+const minMark = 35;
+const getStudentDetails = (markSheet) => ({   
+        ...markSheet,
+        ...studentMarks[markSheet.rollNo],
+        result:getResult(studentMarks[markSheet.rollNo]),
+        total:getTotal(studentMarks[markSheet.rollNo]),
+});
+const getTotal = (marks) => reduce(marks,(a,b)=>a+b,0);
+const getResult = (marks)=> Math.min(...values(marks))> minMark ? "Pass" : "Fail";
+const counter = (a,b)=>
      b.result === "Pass" 
     ? {pass:a.pass+1}
     : {fail:a.fail+1};
 
-var getCount = () => {
-    var count = data.markSheets.map(getStudentDetails);
-    var dict = reduce(count,(a,b)=>({...a,...counter(a,b)}),{pass:0, fail:0});
+const getCount = () => {
+    const studentRecords = data.markSheets.map(getStudentDetails);
+    const dict = reduce(studentRecords,(a,b)=>({...a,...counter(a,b)}),{pass:0, fail:0});
     return dict;
 }
-var getRank = () => {
-    var count =  data.markSheets.map(getStudentDetails);
-    var sortedArray = count.sort((a,b) => b.total - a.total);
-    var rank = 0;
-   var updatedMarkSheet =  sortedArray.map(markSheet => {
-    (markSheet.result === "Pass") ?   markSheet.rank = ++rank : markSheet.rank = "-";
-    return markSheet;
-   });
+const getFinalMarkSheet = () => {
+    const studentRecords =  data.markSheets.map(getStudentDetails);
+    const sortedRecords = studentRecords.sort((a,b) => b.total - a.total);
+    let rank = 0;
+   const updatedMarkSheet =  sortedRecords.map(markSheet => ({
+    ...markSheet,
+    rank:markSheet.result === "Pass" ? rank+=1 : "-",
+   })
+   );
     return updatedMarkSheet;
 };
 
 const getStudentData = () => {
-    const StudentDataList = getRank();
+    const StudentDataList = getFinalMarkSheet();
     const Count = getCount();
     return [
         ...StudentDataList,
